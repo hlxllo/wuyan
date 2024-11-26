@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 @Setter
 public class Authenticate {
+    Integer id;
     @NotEmpty
     String collegeId;
     String collegeName;

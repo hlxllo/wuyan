@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.entity;
 
+import cn.hutool.core.util.RandomUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -35,7 +36,7 @@ public class Base64MultipartFile implements MultipartFile {
         this.fileContent = Base64.getDecoder().decode(parts[1]);
         this.contentType = parts[0].split(";")[0].split(":")[1];
         String extension = MIME_TYPES.getOrDefault(contentType, "jpg");
-        this.fileName = "file." + extension;
+        this.fileName = RandomUtil.randomNumbers(6) + extension;
     }
 
     @Override

@@ -18,11 +18,11 @@ public class AuthenticateController extends BaseController {
     }
 
     @Resource
-    AuthenticateService authenticateService;
+    private AuthenticateService authenticateService;
 
     @PostMapping
     public ResponseDO authenticate(@RequestParam(required = false) String code, @Valid @RequestBody Authenticate authenticate) {
-        authenticateService.addAuthenticate(code, authenticate);
-        return ResponseDO.success(null);
+        Integer id = authenticateService.insertAuthenticate(code, authenticate);
+        return ResponseDO.success(id);
     }
 }
