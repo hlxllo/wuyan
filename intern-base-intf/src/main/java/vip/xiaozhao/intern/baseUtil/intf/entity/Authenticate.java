@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.entity;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,13 +9,20 @@ import lombok.ToString;
 @ToString
 @Setter
 public class Authenticate {
+    @NotEmpty
     String collegeId;
+    String collegeName;
     String studyCard;
     String email;
+    @NotEmpty
     String type;
+    @NotEmpty
     String major;
+    @NotEmpty
     String direction;
     String tutor;
+    @NotEmpty
     String startDate;
+    @NotEmpty
     String endDate;
 }
