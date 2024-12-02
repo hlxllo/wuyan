@@ -1,10 +1,10 @@
 package vip.xiaozhao.intern.baseUtil.service.impl;
 
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Authenticate;
+import vip.xiaozhao.intern.baseUtil.intf.enums.FirstMajorEnum;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.AuthenticateMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.AuthenticateService;
 import vip.xiaozhao.intern.baseUtil.intf.utils.StringUtil;
@@ -24,6 +24,11 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     public Integer insertAuthenticate(String code, Authenticate authenticate) {
         String type = authenticate.getType();
         String studyCard = authenticate.getStudyCard();
+        // 校验方向
+        int direction = Integer.parseInt(authenticate.getDirection());
+        if (direction != 1 && direction != 2) {
+            throw new RuntimeException("方向类型错误！");
+        }
         // 邮箱或图片校验
         if (type.equals("1")) {
             // 验证邮箱
