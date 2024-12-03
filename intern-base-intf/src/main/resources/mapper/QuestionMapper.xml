@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper">
-    <!-- 定义结果映射 -->
-    <resultMap id="TopicResultMap" type="vip.xiaozhao.intern.baseUtil.intf.entity.Topic">
-        <id property="id" column="id"/>
-        <result property="url" column="url"/>
-        <result property="name" column="name"/>
-        <result property="follows" column="follows"/>
-        <result property="questions" column="questions"/>
-    </resultMap>
 
-    <!-- 查询语句 -->
-    <select id="getTopicsByName" resultMap="TopicResultMap">
+    <select id="getTopicsByName" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic">
         SELECT id, url, name, follows, questions
         FROM topic
         WHERE name like concat('%', #{name}, '%')
     </select>
+
+    <select id="getTopicByIdAndName" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic">
+        SELECT id, url, name, follows, questions
+        FROM topic
+        WHERE id = #{id}
+          AND name = #{name}
+    </select>
+
+    <insert id="insertTopic" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO topic
+        <set>
+            <if test="url != null">url = #{url},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="follows != null">follows = #{follows},</if>
+            <if test="questions != null">questions = #{questions},</if>
+        </set>
+    </insert>
+
+    <insert id="insertQuestion" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question
+        <set>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="urls != null">urls = #{urls},</if>
+        </set>
+    </insert>
+
+    <insert id="insertQuestionTopicRelation">
+        INSERT INTO question_topic_relation (question_id, topic_id)
+        VALUES (#{questionId},
+                #{topicId})
+    </insert>
 
 </mapper>

@@ -29,6 +29,6 @@ public enum QuestionTypeEnum {
                 return questionTypeEnum.getType();
             }
         }
-        return "未知类型";
+        throw new RuntimeException("问题类型不存在");
     }
 }

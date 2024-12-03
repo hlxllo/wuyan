@@ -20,5 +20,6 @@ public class Question {
     @NotEmpty
     List<Topic> topics;
     String content;
-    List<String> images;
+    List<Integer> imageIds;
+    String urls;
 }

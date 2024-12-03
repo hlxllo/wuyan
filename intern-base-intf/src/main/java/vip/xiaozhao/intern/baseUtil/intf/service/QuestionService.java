@@ -14,5 +14,6 @@ public interface QuestionService {
     // 根据名称查询话题
     List<Topic> getTopicsByName(String name);
 
+    // 添加问题
     Integer insertQuestion(Question question);
 }
