@@ -1,14 +1,19 @@
 package vip.xiaozhao.intern.baseUtil.controller.interceptor;
 
+import cn.hutool.core.util.StrUtil;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import vip.xiaozhao.intern.baseUtil.controller.util.IPUtil;
 import vip.xiaozhao.intern.baseUtil.intf.constant.CommonConstant;
 import vip.xiaozhao.intern.baseUtil.intf.utils.JjwtUtil;
+
+import java.util.Objects;
 
 /**
  * 全局预处理拦截器
@@ -17,11 +22,13 @@ import vip.xiaozhao.intern.baseUtil.intf.utils.JjwtUtil;
 @Slf4j
 public class PrehandleInterceptor implements HandlerInterceptor {
 
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object object) throws Exception {
-        return isSecurity(request, response);
+        return isSecurity(request, response) && requestExists(request, response);
     }
 
     @Override
@@ -74,6 +81,24 @@ public class PrehandleInterceptor implements HandlerInterceptor {
             }
         }
         return false;
+    }
+
+    // 幂等
+    private boolean requestExists(HttpServletRequest request, HttpServletResponse response) {
+        String header = request.getHeader("authorization");
+        if (StrUtil.isEmpty(header)) {
+            log.info("uuid 不存在");
+            return false;
+        }
+        Object o = redisTemplate.opsForValue().get(header);
+        String uuid = Objects.toString(o, "");
+        // 重复请求，拦截
+        if (!StrUtil.isEmpty(uuid)) {
+            log.info("重复请求");
+            return false;
+        }
+        redisTemplate.opsForValue().set(header, header);
+        return true;
     }
 
 }
