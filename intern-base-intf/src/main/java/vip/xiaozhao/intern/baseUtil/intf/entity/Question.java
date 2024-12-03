@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.entity;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class Question {
     String title;
     @NotNull
     Integer type;
+    @Valid
     @NotEmpty
     List<Topic> topics;
     String content;

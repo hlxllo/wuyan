@@ -64,6 +64,10 @@ public class QuestionServiceImpl implements QuestionService {
                 }
             } else {
                 // TODO 判断话题是否存在，存在就报错
+                Topic result = questionMapper.getTopicByIdAndName(null, name);
+                if (result != null) {
+                    throw new RuntimeException("话题已存在");
+                }
                 questionMapper.insertTopic(topic);
             }
         }
