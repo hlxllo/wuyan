@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.enums;
 
+// 数据库操作枚举
 public enum DBOperationEnum {
     INSERT(1, "insert"),
     UPDATE(2, "update"),

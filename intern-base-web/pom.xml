@@ -7,7 +7,6 @@
         <groupId>vip.xiaozhao.intern</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>vip.xiaozhao.intern</groupId>
     <artifactId>intern-base-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>intern-base-web</name>

@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.enums;
 
+// 问题类别枚举
 public enum QuestionTypeEnum {
     POLICE(1, "考研政策"),
     LIFE(2, "就业生活"),

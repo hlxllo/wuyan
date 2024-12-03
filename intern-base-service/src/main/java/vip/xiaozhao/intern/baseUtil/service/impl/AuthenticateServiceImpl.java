@@ -17,9 +17,6 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     @Resource
     private AuthenticateMapper authenticateMapper;
 
-    @Resource
-    private UploadUtils uploadUtils;
-
     @Override
     public Integer insertAuthenticate(String code, Authenticate authenticate) {
         String type = authenticate.getType();
@@ -42,17 +39,9 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             if (StringUtil.isEmpty(studyCard)) {
                 throw new RuntimeException("证件照不能为空！");
             }
-            // 解码图片
-            MultipartFile file = Base64ImageUtils.decodeToMultipartFile(studyCard);
-            // 上传
-            String url = uploadUtils.upload(file);
-            if (url.equals("上传失败！")) {
-                throw new RuntimeException("上传失败！");
-            }
-            // 设置图片路径
-            authenticate.setStudyCard(url);
         }
-        // TODO 查询学校名称并插入
+        // TODO 根据 id 查询学校名称并插入
+        // 插入数据
         authenticateMapper.insertAuthenticate(authenticate);
         return authenticate.getId();
     }

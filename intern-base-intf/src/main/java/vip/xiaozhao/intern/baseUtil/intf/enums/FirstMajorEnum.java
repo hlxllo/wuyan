@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.intf.enums;
 
+// 一级专业枚举
 public enum FirstMajorEnum {
     // 双值枚举
     MajorONE(1, "major1"),
