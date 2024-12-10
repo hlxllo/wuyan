@@ -9,6 +9,7 @@ import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.enums.QuestionTypeEnum;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.ImageMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
+import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
 
 import java.util.HashMap;
@@ -20,6 +21,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     private QuestionMapper questionMapper;
+
+    @Resource
+    private TopicMapper topicMapper;
 
     @Resource
     private ImageMapper imageMapper;
@@ -35,14 +39,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Topic> getTopicsByName(String name) {
-        List<Topic> topics = questionMapper.getTopicsByName(name);
-        return topics;
-    }
-
-    @Override
     @Transactional
-    public Integer insertQuestion(Question question) {
+    public int insertQuestion(Question question) {
         // 验证标题
         String title = question.getTitle();
         if (title.length() < 5 || title.length() > 34) {
@@ -58,17 +56,16 @@ public class QuestionServiceImpl implements QuestionService {
             Integer id = topic.getId();
             String name = topic.getName();
             if (id != -1) {
-                Topic result = questionMapper.getTopicByIdAndName(id, name);
+                Topic result = topicMapper.getTopicByIdAndName(id, name);
                 if (result == null) {
                     throw new RuntimeException("错误的话题");
                 }
             } else {
-                // TODO 判断话题是否存在，存在就报错
-                Topic result = questionMapper.getTopicByIdAndName(null, name);
+                Topic result = topicMapper.getTopicByIdAndName(null, name);
                 if (result != null) {
                     throw new RuntimeException("话题已存在");
                 }
-                questionMapper.insertTopic(topic);
+                topicMapper.insertTopic(topic);
             }
         }
         // 验证图片

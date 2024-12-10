@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import vip.xiaozhao.intern.baseUtil.controller.BaseController;
 import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
-import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
 
 import java.util.List;
@@ -34,17 +33,10 @@ public class QuestionController extends BaseController {
         return ResponseDO.success(types);
     }
 
-    // 根据名称查询话题
-    @GetMapping("/topic")
-    public ResponseDO getTopicsByName(@RequestParam String name) {
-        List<Topic> topics = questionService.getTopicsByName(name);
-        return ResponseDO.success(topics);
-    }
-
     // 添加问题
     @PostMapping("/commit")
     public ResponseDO insertQuestion(@Valid @RequestBody Question question) {
-        Integer id = questionService.insertQuestion(question);
+        int id = questionService.insertQuestion(question);
         return ResponseDO.success(id);
     }
 }

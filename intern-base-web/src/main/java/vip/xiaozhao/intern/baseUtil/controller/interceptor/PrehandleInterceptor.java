@@ -73,7 +73,7 @@ public class PrehandleInterceptor implements HandlerInterceptor {
 
     private boolean isInWhiteSheet(String url) {
         //这部分要加内网ip权限， 外网也可以访问
-        String[] strings = {"/hello","code/generate", "/wuyan/authenticate", "/wuyan/question"};
+        String[] strings = {"/hello","code/generate", "/wuyan"};
         for (String s : strings) {
             if (url.contains(s)) {
                 log.info("white sheet，in ：" + url);
