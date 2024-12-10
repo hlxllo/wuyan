@@ -56,12 +56,12 @@ public class QuestionServiceImpl implements QuestionService {
             Integer id = topic.getId();
             String name = topic.getName();
             if (id != -1) {
-                Topic result = topicMapper.getTopicByIdAndName(id, name);
+                Topic result = topicMapper.getTopicById(id);
                 if (result == null) {
                     throw new RuntimeException("错误的话题");
                 }
             } else {
-                Topic result = topicMapper.getTopicByIdAndName(null, name);
+                Topic result = topicMapper.getTopicByName(name);
                 if (result != null) {
                     throw new RuntimeException("话题已存在");
                 }

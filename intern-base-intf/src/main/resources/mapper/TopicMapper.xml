@@ -8,27 +8,22 @@
         WHERE name like concat('%', #{name}, '%')
     </select>
 
-    <select id="getTopicByIdAndName" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic">
+    <select id="getTopicById" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic">
         SELECT id, url, name, follows, questions
         FROM topic
-        WHERE 1=1
-        <if test="id != null and id != -1">
-            AND id = #{id}
-        </if>
-        <if test="name != null and name != ''">
-            AND name = #{name}
-        </if>
+        WHERE id = #{id}
+    </select>
+    <select id="getTopicByName" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic"
+            parameterType="java.lang.String">
+        SELECT id, url, name, follows, questions
+        FROM topic
+        WHERE name = #{name}
     </select>
 
     <insert id="insertTopic" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Topic" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO topic
-        <set>
-            <if test="url != null">url = #{url},</if>
-            <if test="name != null and name != ''">name = #{name},</if>
-            <if test="follows != null">follows = #{follows},</if>
-            <if test="questions != null">questions = #{questions},</if>
-        </set>
+        INSERT INTO topic (url, name)
+        VALUES (#{url}, #{name})
     </insert>
 
 </mapper>

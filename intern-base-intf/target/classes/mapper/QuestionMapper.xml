@@ -4,13 +4,8 @@
 
     <insert id="insertQuestion" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Question"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO question
-        <set>
-            <if test="title != null and title != ''">title = #{title},</if>
-            <if test="type != null">type = #{type},</if>
-            <if test="content != null">content = #{content},</if>
-            <if test="urls != null">urls = #{urls},</if>
-        </set>
+        INSERT INTO question (title, type, content, urls)
+        VALUES (#{title},#{type},#{content},#{urls})
     </insert>
 
     <insert id="insertQuestionTopicRelation">

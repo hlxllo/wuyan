@@ -11,7 +11,9 @@ public interface TopicMapper {
 
     List<Topic> getTopicsByName(String name);
 
-    Topic getTopicByIdAndName(@Param("id") Integer id, @Param("name") String name);
-
     void insertTopic(Topic topic);
+
+    Topic getTopicById(Integer id);
+
+    Topic getTopicByName(String name);
 }
