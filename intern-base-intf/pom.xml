@@ -12,6 +12,11 @@
     <artifactId>intern-base-intf</artifactId>
 
     <dependencies>
+        <!--credentials-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>credentials-java</artifactId>
+        </dependency>
         <!--通用 sdk 依赖-->
         <dependency>
             <groupId>com.aliyun</groupId>

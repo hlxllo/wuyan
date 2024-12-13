@@ -28,7 +28,8 @@ public class PrehandleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object object) throws Exception {
-        return isSecurity(request, response) && requestExists(request, response);
+        return isSecurity(request, response)
+                /*&& requestExists(request, response)*/;
     }
 
     @Override

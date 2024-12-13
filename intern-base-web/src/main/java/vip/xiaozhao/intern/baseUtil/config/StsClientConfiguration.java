@@ -21,12 +21,11 @@ public class StsClientConfiguration {
         // Endpoint 请参考 https://api.aliyun.com/product/Sts
         config.endpoint = "sts.cn-hangzhou.aliyuncs.com";
         com.aliyun.credentials.models.Config credentialConfig = new com.aliyun.credentials.models.Config();
-        credentialConfig.accessKeyId = stsProperties.getAccessKeyId();
-        credentialConfig.accessKeySecret = stsProperties.getAccessKeySecret();
-        credentialConfig.roleName = stsProperties.getRoleSessionName();
-        credentialConfig.roleArn = stsProperties.getRoleArn();
-        System.out.println("AccessKeyId: " + stsProperties.getAccessKeyId());
-        System.out.println("AccessKeySecret: " + stsProperties.getAccessKeySecret());
+        credentialConfig.setType("access_key");
+        credentialConfig.setAccessKeyId(stsProperties.getAccessKeyId());
+        credentialConfig.setAccessKeySecret(stsProperties.getAccessKeySecret());
+        //credentialConfig.roleName = stsProperties.getRoleSessionName();
+        //credentialConfig.roleArn = stsProperties.getRoleArn();
         try {
             com.aliyun.credentials.Client credentials = new com.aliyun.credentials.Client(credentialConfig);
             config.setCredential(credentials);

@@ -9,6 +9,7 @@ import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.xiaozhao.intern.baseUtil.config.StsProperties;
 
@@ -16,6 +17,7 @@ import static com.aliyun.teautil.Common.assertAsString;
 
 
 @RestController
+@RequestMapping("/wuyan")
 public class StsController {
 
     @Resource
@@ -24,7 +26,7 @@ public class StsController {
     @Resource
     private Client stsClient;
 
-    @GetMapping("/get_sts_token_for_oss_upload")
+    @GetMapping("/sts")
     public AssumeRoleResponseBody.AssumeRoleResponseBodyCredentials generateStsToken() {
         AssumeRoleRequest assumeRoleRequest = new AssumeRoleRequest()
             .setDurationSeconds(900L)
