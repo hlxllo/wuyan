@@ -24,12 +24,6 @@
             keyProperty="id">
         INSERT INTO topic (url, name)
         VALUES (#{url}, #{name})
-        <!--<set>-->
-        <!--    <if test="url != null">url = #{url},</if>-->
-        <!--    <if test="name != null and name != ''">name = #{name},</if>-->
-        <!--    <if test="follows != null">follows = #{follows},</if>-->
-        <!--    <if test="questions != null">questions = #{questions},</if>-->
-        <!--</set>-->
     </insert>
 
 </mapper>
