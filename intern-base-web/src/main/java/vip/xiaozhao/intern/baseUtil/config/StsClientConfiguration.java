@@ -24,8 +24,6 @@ public class StsClientConfiguration {
         credentialConfig.setType("access_key");
         credentialConfig.setAccessKeyId(stsProperties.getAccessKeyId());
         credentialConfig.setAccessKeySecret(stsProperties.getAccessKeySecret());
-        //credentialConfig.roleName = stsProperties.getRoleSessionName();
-        //credentialConfig.roleArn = stsProperties.getRoleArn();
         try {
             com.aliyun.credentials.Client credentials = new com.aliyun.credentials.Client(credentialConfig);
             config.setCredential(credentials);
