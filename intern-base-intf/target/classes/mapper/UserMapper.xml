@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaozhao.intern.baseUtil.intf.mapper.UserMapper">
+
+    <select id="getUserBasicById" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo"
+            parameterType="int">
+        SELECT id,
+               college_id,
+               college_name,
+               follows,
+               fans
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="getUserById" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.User"
+            parameterType="java.lang.Integer">
+        SELECT id,
+               url,
+               college_id,
+               college_name,
+               follows,
+               fans,
+               major,
+               direction,
+               start_date,
+               end_date
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+</mapper>

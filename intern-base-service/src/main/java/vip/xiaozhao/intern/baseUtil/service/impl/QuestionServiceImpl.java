@@ -1,15 +1,18 @@
 package vip.xiaozhao.intern.baseUtil.service.impl;
 
+import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Image;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
+import vip.xiaozhao.intern.baseUtil.intf.entity.User;
 import vip.xiaozhao.intern.baseUtil.intf.enums.QuestionTypeEnum;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.ImageMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
+import vip.xiaozhao.intern.baseUtil.intf.mapper.UserMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
 
 import java.util.HashMap;
@@ -28,6 +31,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     private ImageMapper imageMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public Map<Integer, String> getAllQuestionTypes() {
         HashMap<Integer, String> typeMap = new HashMap<>();
@@ -41,6 +47,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public int insertQuestion(Question question) {
+        // 验证用户是否存在
+        Integer userId = question.getUserId();
+        User user = userMapper.getUserById(userId);
+        if (ObjUtil.isEmpty(user)) {
+            throw new RuntimeException("用户不存在");
+        }
         // 验证标题
         String title = question.getTitle();
         if (title.length() < 5 || title.length() > 34) {

@@ -9,5 +9,6 @@ vip\xiaozhao\intern\baseUtil\controller\auth\AuthenticateController.class
 vip\xiaozhao\intern\baseUtil\controller\util\IPUtil.class
 vip\xiaozhao\intern\baseUtil\NaofferWebApplication.class
 vip\xiaozhao\intern\baseUtil\controller\topic\TopicController.class
+vip\xiaozhao\intern\baseUtil\controller\detail\DetailController.class
 vip\xiaozhao\intern\baseUtil\controller\interceptor\PrehandleInterceptor.class
 vip\xiaozhao\intern\baseUtil\controller\question\QuestionController.class

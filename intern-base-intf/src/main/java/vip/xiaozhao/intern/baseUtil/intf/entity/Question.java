@@ -14,6 +14,8 @@ import java.util.List;
 @Setter
 public class Question {
     Integer id;
+    @NotNull
+    Integer userId;
     @NotEmpty
     String title;
     @NotNull

@@ -12,7 +12,7 @@ import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler
+    //@ExceptionHandler
     public ResponseDO baseExceptionHandler(Exception e) {
         log.error("异常信息:{}", e.getMessage());
         // 默认状态码默认都500

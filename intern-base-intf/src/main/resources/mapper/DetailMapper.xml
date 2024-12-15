@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaozhao.intern.baseUtil.intf.mapper.DetailMapper">
+
+    <select id="getQuestionDetailById" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo"
+            parameterType="int">
+        SELECT id,
+               user_id,
+               title,
+               type,
+               content,
+               urls,
+               answers,
+               browses,
+               add_time
+        FROM question
+        WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -4,8 +4,8 @@
 
     <insert id="insertQuestion" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Question"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO question (title, type, content, urls)
-        VALUES (#{title},#{type},#{content},#{urls})
+        INSERT INTO question (title, type, content, urls, user_id)
+        VALUES (#{title}, #{type}, #{content}, #{urls}, #{userId})
     </insert>
 
     <insert id="insertQuestionTopicRelation">
@@ -13,5 +13,11 @@
         VALUES (#{questionId},
                 #{topicId})
     </insert>
+
+    <select id="getTopicIds" resultType="java.lang.Integer" parameterType="int">
+        SELECT topic_id
+        FROM question_topic_relation
+        WHERE question_id = #{id}
+    </select>
 
 </mapper>
