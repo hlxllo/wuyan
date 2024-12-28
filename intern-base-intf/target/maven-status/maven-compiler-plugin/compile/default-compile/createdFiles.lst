@@ -5,6 +5,7 @@ vip\xiaozhao\intern\baseUtil\intf\utils\redis\RedisUtils.class
 vip\xiaozhao\intern\baseUtil\intf\constant\IdentifyCodeConstant.class
 vip\xiaozhao\intern\baseUtil\intf\handler\GlobalExceptionHandler.class
 vip\xiaozhao\intern\baseUtil\intf\enums\QuestionTypeEnum.class
+vip\xiaozhao\intern\baseUtil\intf\service\UserService.class
 vip\xiaozhao\intern\baseUtil\intf\constant\SignKeyConstant.class
 vip\xiaozhao\intern\baseUtil\intf\utils\uploadUtils\Base64ImageUtils.class
 vip\xiaozhao\intern\baseUtil\intf\entity\Question.class
@@ -22,6 +23,7 @@ vip\xiaozhao\intern\baseUtil\intf\entity\Image.class
 vip\xiaozhao\intern\baseUtil\intf\entity\UserExtend.class
 vip\xiaozhao\intern\baseUtil\intf\dto\ResponseDO.class
 vip\xiaozhao\intern\baseUtil\intf\constant\RedisConstant.class
+vip\xiaozhao\intern\baseUtil\intf\vo\AnswerBasicVo.class
 vip\xiaozhao\intern\baseUtil\intf\utils\smsSender.class
 vip\xiaozhao\intern\baseUtil\intf\utils\cos\COSUtils.class
 vip\xiaozhao\intern\baseUtil\intf\utils\security\RSASignature.class
@@ -37,6 +39,7 @@ vip\xiaozhao\intern\baseUtil\intf\enums\DBOperationEnum.class
 vip\xiaozhao\intern\baseUtil\intf\vo\QuestionDetailVo.class
 vip\xiaozhao\intern\baseUtil\intf\utils\security\Base64.class
 vip\xiaozhao\intern\baseUtil\intf\utils\security\MD5Signature.class
+vip\xiaozhao\intern\baseUtil\intf\entity\Answer.class
 vip\xiaozhao\intern\baseUtil\intf\service\DetailService.class
 vip\xiaozhao\intern\baseUtil\intf\entity\User.class
 vip\xiaozhao\intern\baseUtil\intf\utils\ConvertUtils.class

@@ -6,6 +6,8 @@ D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\inter
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\enums\DBOperationEnum.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\enums\FirstMajorEnum.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\entity\Authenticate.java
+D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\service\UserService.java
+D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\entity\Answer.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\constant\IdentifyCodeConstant.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\dto\ResponseDO.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\utils\uploadUtils\UploadUtils.java
@@ -32,6 +34,7 @@ D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\inter
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\entity\Question.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\enums\SmsTypeEnum.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\mapper\DetailMapper.java
+D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\vo\AnswerBasicVo.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\entity\Base64MultipartFile.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\enums\QuestionTypeEnum.java
 D:\back_end\JAVA\code\wuyan-P1\intern-base-intf\src\main\java\vip\xiaozhao\intern\baseUtil\intf\entity\Topic.java

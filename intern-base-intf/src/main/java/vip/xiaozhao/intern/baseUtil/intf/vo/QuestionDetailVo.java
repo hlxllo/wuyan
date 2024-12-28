@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author dogofayaka
+ */
 @Data
 public class QuestionDetailVo {
     private int id;

@@ -5,19 +5,20 @@ import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.DetailMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.UserMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
-import vip.xiaozhao.intern.baseUtil.intf.utils.ConvertUtils;
+import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
+import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerBasicVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class DetailServiceImpl implements DetailService {
@@ -26,7 +27,7 @@ public class DetailServiceImpl implements DetailService {
     private DetailMapper detailMapper;
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Resource
     private TopicMapper topicMapper;
@@ -37,9 +38,10 @@ public class DetailServiceImpl implements DetailService {
     @Resource
     private RedisTemplate redisTemplate;
 
+
     @Override
     public QuestionDetailVo getQuestionDetail(int id) {
-        if (id == 0) {
+        if (id <= 0) {
             throw new RuntimeException("id 不存在");
         }
         // 根据 id 查询问题
@@ -60,19 +62,32 @@ public class DetailServiceImpl implements DetailService {
         vo.setTopics(topics);
         // 根据 userId 查询用户基本信息
         int userId = vo.getUserId();
-        Object o = redisTemplate.opsForValue().get(userId);
-        UserBasicVo userVo;
-        if (o == null) {
-            // 如果没查到，去数据库查，并放入缓存
-            userVo = userMapper.getUserBasicById(userId);
-            if (ObjUtil.isEmpty(userVo)) {
-                throw new RuntimeException("用户不存在");
-            }
-            redisTemplate.opsForValue().set(userId, userVo, 5, TimeUnit.MINUTES);
-        } else {
-            userVo = ConvertUtils.convertObject(o, UserBasicVo.class);
-        }
+        UserBasicVo userVo = userService.getUserBasic(userId);
         vo.setUserVo(userVo);
         return vo;
+    }
+
+    @Override
+    public List<AnswerBasicVo> listAnswers(int rule) {
+        return List.of();
+    }
+
+    @Transactional
+    @Override
+    public int addAnswer(Answer answer) {
+        int userId = answer.getUserId();
+        int questionId = answer.getQuestionId();
+        UserBasicVo userBasic = userService.getUserBasic(userId);
+        // TODO 暂时先用详细的顶着
+        QuestionDetailVo questionDetail = detailMapper.getQuestionDetailById(questionId);
+        if (ObjUtil.isEmpty(userBasic) || ObjUtil.isEmpty(questionDetail)) {
+            throw new RuntimeException("用户或问题不存在");
+        }
+        detailMapper.addAnswer(answer);
+        int id = answer.getId();
+        if (id <= 0) {
+            throw new RuntimeException("发布问题失败");
+        }
+        return id;
     }
 }
