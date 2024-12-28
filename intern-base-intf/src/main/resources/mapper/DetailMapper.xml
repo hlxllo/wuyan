@@ -28,4 +28,34 @@
         WHERE id = #{id}
     </select>
 
+    <select id="listAnswersByIdAndHeat" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo">
+        SELECT id,
+               user_id,
+               question_id,
+               content,
+               urls,
+               likes,
+               favorites,
+               comments,
+               add_time
+        FROM answer
+        ORDER BY heat DESC LIMIT #{limit}
+        OFFSET #{offset};
+    </select>
+
+    <select id="listAnswersByIdAndAddTime" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo">
+        SELECT id,
+               user_id,
+               question_id,
+               content,
+               urls,
+               likes,
+               favorites,
+               comments,
+               add_time
+        FROM answer
+        ORDER BY add_time DESC LIMIT #{limit}
+        OFFSET #{offset};
+    </select>
+
 </mapper>

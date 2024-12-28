@@ -9,7 +9,9 @@ import java.util.Date;
  * @author hlxllo
  */
 @Data
-public class AnswerBasicVo implements Serializable {
+public class AnswerDetailVo implements Serializable {
+    private int id;
+    private int userId;
     private int questionId;
     private String content;
     private String urls;

@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.UserMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
 import vip.xiaozhao.intern.baseUtil.intf.utils.ConvertUtils;
@@ -33,9 +34,10 @@ public class UserServiceImpl implements UserService {
             if (ObjUtil.isEmpty(userVo)) {
                 throw new RuntimeException("用户不存在");
             }
-            redisTemplate.opsForValue().set(id, userVo, 5, TimeUnit.MINUTES);
+            String key = RedisConstant.USER_BASIC + id;
+            redisTemplate.opsForValue().set(key, userVo, 5, TimeUnit.MINUTES);
         } else {
-            userVo = ConvertUtils.convertObject(o, UserBasicVo.class);
+            userVo = ConvertUtils.convert2Object(o, UserBasicVo.class);
         }
         return userVo;
     }

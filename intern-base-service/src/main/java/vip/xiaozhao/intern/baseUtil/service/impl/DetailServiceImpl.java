@@ -6,6 +6,8 @@ import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaozhao.intern.baseUtil.intf.constant.PageConstant;
+import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.DetailMapper;
@@ -13,13 +15,18 @@ import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
 import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
 import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
-import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerBasicVo;
+import vip.xiaozhao.intern.baseUtil.intf.utils.ConvertUtils;
+import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * @author dogofayaka
+ */
 @Service
 public class DetailServiceImpl implements DetailService {
 
@@ -37,7 +44,6 @@ public class DetailServiceImpl implements DetailService {
 
     @Resource
     private RedisTemplate redisTemplate;
-
 
     @Override
     public QuestionDetailVo getQuestionDetail(int id) {
@@ -68,11 +74,45 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public List<AnswerBasicVo> listAnswers(int rule) {
-        return List.of();
+    public List<AnswerDetailVo> listAnswers(int id, int rule, int page) {
+        Object o = null;
+        // 如果页码为 1 则查缓存，不存在则缓存
+        String key = RedisConstant.ANSWER_DETAIL + id + ":" + rule;
+        if (page == 1) {
+            o = redisTemplate.opsForValue().get(key);
+        }
+        List<AnswerDetailVo> vos;
+        int offset = (page - 1) * PageConstant.SIZE;
+        // 如果查到了，直接返回
+        if (o != null) {
+            vos = ConvertUtils.convert2List(o);
+        } else {
+            // 如果为空就去数据库查
+            if (rule == 1) {
+                vos = detailMapper.listAnswersByIdAndHeat(id, PageConstant.SIZE, offset);
+            } else {
+                vos = detailMapper.listAnswersByIdAndAddTime(id, PageConstant.SIZE, offset);
+            }
+            if (vos == null) {
+                throw new RuntimeException("问题不存在");
+            }
+            // 判断用户是否存在，并补充用户基本信息
+            for (AnswerDetailVo vo : vos) {
+                int userId = vo.getUserId();
+                if (userId == 0) {
+                    throw new RuntimeException("用户不存在");
+                }
+                UserBasicVo userBasic = userService.getUserBasic(userId);
+                vo.setUserVo(userBasic);
+            }
+            // 第一页放缓存
+            if (page == 1) {
+                redisTemplate.opsForValue().set(key, vos, 5, TimeUnit.MINUTES);
+            }
+        }
+        return vos;
     }
 
-    @Transactional
     @Override
     public int addAnswer(Answer answer) {
         int userId = answer.getUserId();

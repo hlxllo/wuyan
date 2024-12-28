@@ -1,6 +1,5 @@
 package vip.xiaozhao.intern.baseUtil.controller.detail;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
@@ -11,7 +10,7 @@ import vip.xiaozhao.intern.baseUtil.controller.BaseController;
 import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
 import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
-import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerBasicVo;
+import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
 import java.util.List;
@@ -39,12 +38,18 @@ public class DetailController extends BaseController {
     }
 
     // 查询回答列表
-    @GetMapping("/answers")
-    public ResponseDO listAnswers(@RequestParam int rule) {
+    @GetMapping("/answers/{id}")
+    public ResponseDO listAnswers(@PathVariable int id, @RequestParam int rule, @RequestParam int page) {
+        if (id <= 0) {
+            return ResponseDO.fail("问题不存在");
+        }
         if (rule != 1 && rule != 2) {
             return ResponseDO.fail("规则错误");
         }
-        List<AnswerBasicVo> vos = detailService.listAnswers(rule);
+        if (page <= 0) {
+            return ResponseDO.fail("页码不存在");
+        }
+        List<AnswerDetailVo> vos = detailService.listAnswers(id, rule, page);
         return ResponseDO.success(vos);
     }
 
