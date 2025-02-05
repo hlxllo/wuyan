@@ -11,9 +11,7 @@ import java.util.List;
  * @author dogofayaka
  */
 @Mapper
-public interface DetailMapper {
-
-    QuestionDetailVo getQuestionDetailById(int id);
+public interface AnswerMapper {
 
     void addAnswer(Answer answer);
 

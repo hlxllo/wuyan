@@ -16,4 +16,6 @@ public interface TopicMapper {
     Topic getTopicById(Integer id);
 
     Topic getTopicByName(String name);
+
+    List<Integer> getTopicIds(int id);
 }

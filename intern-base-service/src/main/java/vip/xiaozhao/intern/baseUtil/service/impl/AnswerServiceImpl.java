@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 import vip.xiaozhao.intern.baseUtil.intf.constant.PageConstant;
 import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.DetailMapper;
+import vip.xiaozhao.intern.baseUtil.intf.mapper.AnswerMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
-import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
+import vip.xiaozhao.intern.baseUtil.intf.service.AnswerService;
 import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
 import vip.xiaozhao.intern.baseUtil.intf.utils.ConvertUtils;
 import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
@@ -24,16 +23,19 @@ import java.util.concurrent.TimeUnit;
  * @author dogofayaka
  */
 @Service
-public class DetailServiceImpl implements DetailService {
+public class AnswerServiceImpl implements AnswerService {
 
     @Resource
-    private DetailMapper detailMapper;
+    private AnswerMapper answerMapper;
 
     @Resource
     private UserService userService;
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Resource
+    private QuestionMapper questionMapper;
 
     @Override
     public List<AnswerDetailVo> listAnswers(int id, int rule, int page) {
@@ -51,9 +53,9 @@ public class DetailServiceImpl implements DetailService {
         } else {
             // 如果为空就去数据库查
             if (rule == 1) {
-                vos = detailMapper.listAnswersByIdAndHeat(id, PageConstant.SIZE, offset);
+                vos = answerMapper.listAnswersByIdAndHeat(id, PageConstant.SIZE, offset);
             } else {
-                vos = detailMapper.listAnswersByIdAndAddTime(id, PageConstant.SIZE, offset);
+                vos = answerMapper.listAnswersByIdAndAddTime(id, PageConstant.SIZE, offset);
             }
             if (vos == null) {
                 throw new RuntimeException("问题不存在");
@@ -81,11 +83,11 @@ public class DetailServiceImpl implements DetailService {
         int questionId = answer.getQuestionId();
         UserBasicVo userBasic = userService.getUserBasic(userId);
         // TODO 暂时先用详细的顶着
-        QuestionDetailVo questionDetail = detailMapper.getQuestionDetailById(questionId);
+        QuestionDetailVo questionDetail = questionMapper.getQuestionDetailById(questionId);
         if (ObjUtil.isEmpty(userBasic) || ObjUtil.isEmpty(questionDetail)) {
             throw new RuntimeException("用户或问题不存在");
         }
-        detailMapper.addAnswer(answer);
+        answerMapper.addAnswer(answer);
         int id = answer.getId();
         if (id <= 0) {
             throw new RuntimeException("发布回答失败");

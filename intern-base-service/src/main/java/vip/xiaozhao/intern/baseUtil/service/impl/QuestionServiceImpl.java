@@ -37,7 +37,7 @@ public class QuestionServiceImpl implements QuestionService {
     private UserMapper userMapper;
 
     @Resource
-    private DetailMapper detailMapper;
+    private AnswerMapper answerMapper;
 
     @Resource
     private UserService userService;
@@ -121,12 +121,12 @@ public class QuestionServiceImpl implements QuestionService {
             throw new RuntimeException("id 不存在");
         }
         // 根据 id 查询问题
-        QuestionDetailVo vo = detailMapper.getQuestionDetailById(id);
+        QuestionDetailVo vo = questionMapper.getQuestionDetailById(id);
         if (vo == null) {
             throw new RuntimeException("问题不存在");
         }
         // 根据 id 查询话题
-        List<Integer> topicIds = questionMapper.getTopicIds(id);
+        List<Integer> topicIds = topicMapper.getTopicIds(id);
         if (CollUtil.isEmpty(topicIds)) {
             throw new RuntimeException("话题不存在");
         }

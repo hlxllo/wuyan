@@ -3,6 +3,7 @@ package vip.xiaozhao.intern.baseUtil.intf.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
+import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface QuestionMapper {
 
     void insertQuestionTopicRelation(@Param("questionId") Integer questionId, @Param("topicId") Integer topicId);
 
-    List<Integer> getTopicIds(int id);
+    QuestionDetailVo getQuestionDetailById(int id);
 }

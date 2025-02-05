@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import vip.xiaozhao.intern.baseUtil.controller.BaseController;
 import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
-import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
+import vip.xiaozhao.intern.baseUtil.intf.service.AnswerService;
 import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
 
 import java.util.List;
@@ -18,19 +18,19 @@ import java.util.List;
  * @author dogofayaka
  */
 @RestController
-@RequestMapping("/wuyan/detail")
+@RequestMapping("/wuyan/answers")
 @Validated
-public class DetailController extends BaseController {
+public class AnswerController extends BaseController {
     @Override
     protected int getCurrentUserId(HttpServletRequest request) {
         return super.getCurrentUserId(request);
     }
 
     @Resource
-    private DetailService detailService;
+    private AnswerService answerService;
 
     // 查询回答列表
-    @GetMapping("/answers/{id}")
+    @GetMapping("/{id}")
     public ResponseDO listAnswers(@PathVariable int id, @RequestParam int rule, @RequestParam int page) {
         if (id <= 0) {
             return ResponseDO.fail("问题不存在");
@@ -41,12 +41,12 @@ public class DetailController extends BaseController {
         if (page <= 0) {
             return ResponseDO.fail("页码不存在");
         }
-        List<AnswerDetailVo> vos = detailService.listAnswers(id, rule, page);
+        List<AnswerDetailVo> vos = answerService.listAnswers(id, rule, page);
         return ResponseDO.success(vos);
     }
 
     // 发布回答
-    @PostMapping("/answer")
+    @PostMapping
     public ResponseDO commitAnswer(@RequestBody Answer answer) {
         if (ObjUtil.isEmpty(answer)) {
             return ResponseDO.fail("回答不能为空");
@@ -58,7 +58,7 @@ public class DetailController extends BaseController {
         if (!StrUtil.isEmpty(urls) && urls.split(",").length > 9) {
             return ResponseDO.fail("图片数量超过上限");
         }
-        int id = detailService.addAnswer(answer);
+        int id = answerService.addAnswer(answer);
         return ResponseDO.success(id);
     }
 }

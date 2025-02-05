@@ -26,4 +26,10 @@
         VALUES (#{url}, #{name})
     </insert>
 
+    <select id="getTopicIds" resultType="java.lang.Integer" parameterType="int">
+        SELECT topic_id
+        FROM question_topic_relation
+        WHERE question_id = #{id}
+    </select>
+
 </mapper>
