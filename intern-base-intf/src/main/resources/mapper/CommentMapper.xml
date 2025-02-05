@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaozhao.intern.baseUtil.intf.mapper.CommentMapper">
+
+    <insert id="addComment" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Comment">
+        INSERT INTO comment (user_id,
+                             answer_id,
+                             first_comment_id,
+                             content)
+        VALUES (#{userId},
+                #{answerId},
+                #{firstCommentId},
+                #{content})
+    </insert>
+
+    <update id="increaseSecondCommentCountById" parameterType="int">
+        UPDATE comment
+        SET second_comments = second_comments + 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="getCommentById" resultType="vip.xiaozhao.intern.baseUtil.intf.entity.Comment"
+            parameterType="int">
+        SELECT id,
+               user_id,
+               answer_id,
+               first_comment_id,
+               content
+        FROM comment
+        WHERE id = #{id}
+    </select>
+</mapper>

@@ -13,21 +13,6 @@
                 #{urls})
     </insert>
 
-    <select id="getQuestionDetailById" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo"
-            parameterType="int">
-        SELECT id,
-               user_id,
-               title,
-               type,
-               content,
-               urls,
-               answers,
-               browses,
-               add_time
-        FROM question
-        WHERE id = #{id}
-    </select>
-
     <select id="listAnswersByIdAndHeat" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo">
         SELECT id,
                user_id,
@@ -56,6 +41,21 @@
         FROM answer
         ORDER BY add_time DESC LIMIT #{limit}
         OFFSET #{offset};
+    </select>
+
+    <select id="getAnswerDetailById" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo"
+            parameterType="int">
+        SELECT id,
+               user_id,
+               question_id,
+               content,
+               urls,
+               likes,
+               favorites,
+               comments,
+               add_time
+        FROM answer
+        WHERE id = #{id}
     </select>
 
 </mapper>

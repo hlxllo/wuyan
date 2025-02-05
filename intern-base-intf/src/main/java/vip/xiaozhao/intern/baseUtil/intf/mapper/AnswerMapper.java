@@ -18,4 +18,6 @@ public interface AnswerMapper {
     List<AnswerDetailVo> listAnswersByIdAndHeat(int id, int limit, int offset);
 
     List<AnswerDetailVo> listAnswersByIdAndAddTime(int id, int limit, int offset);
+
+    AnswerDetailVo getAnswerDetailById(int id);
 }
