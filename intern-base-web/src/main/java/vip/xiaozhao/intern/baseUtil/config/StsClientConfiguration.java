@@ -19,7 +19,7 @@ public class StsClientConfiguration {
         // 详情请参考：https://help.aliyun.com/zh/sdk/developer-reference/manage-access-credentials
         Config config = new Config();
         // Endpoint 请参考 https://api.aliyun.com/product/Sts
-        config.endpoint = "sts.cn-hangzhou.aliyuncs.com";
+        config.endpoint = stsProperties.getEndpoint();
         com.aliyun.credentials.models.Config credentialConfig = new com.aliyun.credentials.models.Config();
         credentialConfig.setType("access_key");
         credentialConfig.setAccessKeyId(stsProperties.getAccessKeyId());
