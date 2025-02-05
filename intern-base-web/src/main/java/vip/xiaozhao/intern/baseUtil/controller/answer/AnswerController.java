@@ -1,4 +1,4 @@
-package vip.xiaozhao.intern.baseUtil.controller.detail;
+package vip.xiaozhao.intern.baseUtil.controller.answer;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
