@@ -31,4 +31,13 @@ public enum QuestionTypeEnum {
         }
         throw new RuntimeException("问题类型不存在");
     }
+
+    public static int getNumber(String type) {
+        for (QuestionTypeEnum questionTypeEnum : QuestionTypeEnum.values()) {
+            if (questionTypeEnum.getType().equals(type)) {
+                return questionTypeEnum.getNumber();
+            }
+        }
+        throw new RuntimeException("问题类型不存在");
+    }
 }

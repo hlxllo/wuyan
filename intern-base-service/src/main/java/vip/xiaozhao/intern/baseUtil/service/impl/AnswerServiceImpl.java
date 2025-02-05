@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import vip.xiaozhao.intern.baseUtil.intf.constant.PageConstant;
+import vip.xiaozhao.intern.baseUtil.intf.constant.QueryConstant;
 import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.AnswerMapper;
@@ -46,16 +46,16 @@ public class AnswerServiceImpl implements AnswerService {
             o = redisTemplate.opsForValue().get(key);
         }
         List<AnswerDetailVo> vos;
-        int offset = (page - 1) * PageConstant.SIZE;
+        int offset = (page - 1) * QueryConstant.SIZE;
         // 如果查到了，直接返回
         if (o != null) {
-            vos = ConvertUtils.convert2List(o);
+            vos = ConvertUtils.convert2List(o, AnswerDetailVo.class);
         } else {
             // 如果为空就去数据库查
             if (rule == 1) {
-                vos = answerMapper.listAnswersByIdAndHeat(id, PageConstant.SIZE, offset);
+                vos = answerMapper.listAnswersByIdAndHeat(id, QueryConstant.SIZE, offset);
             } else {
-                vos = answerMapper.listAnswersByIdAndAddTime(id, PageConstant.SIZE, offset);
+                vos = answerMapper.listAnswersByIdAndAddTime(id, QueryConstant.SIZE, offset);
             }
             if (vos == null) {
                 throw new RuntimeException("问题不存在");

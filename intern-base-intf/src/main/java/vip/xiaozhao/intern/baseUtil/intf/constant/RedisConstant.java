@@ -33,4 +33,5 @@ public class RedisConstant {
 
     public static final String USER_BASIC = "user_basic:";
     public static final String ANSWER_DETAIL = "answer_detail:";
+    public static final String HOT_QUESTION = "hot_question:";
 }

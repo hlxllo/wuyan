@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaozhao.intern.baseUtil.intf.mapper.AuthenticateMapper">
+    <insert id="insertAuthenticate" parameterType="vip.xiaozhao.intern.baseUtil.intf.entity.Authenticate"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO authenticate (college_id,
+                                  college_name,
+                                  study_card,
+                                  email,
+                                  major,
+                                  direction,
+                                  tutor,
+                                  start_date,
+                                  end_date)
+        VALUES (#{collegeId},
+                #{collegeName},
+                #{studyCard},
+                #{email},
+                #{major},
+                #{direction},
+                #{tutor},
+                #{startDate},
+                #{endDate})
+    </insert>
+</mapper>

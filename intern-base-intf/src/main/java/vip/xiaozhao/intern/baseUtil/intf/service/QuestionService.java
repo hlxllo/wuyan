@@ -1,8 +1,10 @@
 package vip.xiaozhao.intern.baseUtil.intf.service;
 
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
+import vip.xiaozhao.intern.baseUtil.intf.vo.HotQuestionVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface QuestionService {
@@ -14,4 +16,6 @@ public interface QuestionService {
 
     // 获取问题详情
     QuestionDetailVo getQuestionDetail(int id);
+
+    List<HotQuestionVo> listHotQuestions();
 }

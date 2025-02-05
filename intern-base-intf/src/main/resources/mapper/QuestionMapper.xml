@@ -14,12 +14,6 @@
                 #{topicId})
     </insert>
 
-    <select id="getTopicIds" resultType="java.lang.Integer" parameterType="int">
-        SELECT topic_id
-        FROM question_topic_relation
-        WHERE question_id = #{id}
-    </select>
-
     <select id="getQuestionDetailById" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo"
             parameterType="int">
         SELECT id,
@@ -33,6 +27,32 @@
                add_time
         FROM question
         WHERE id = #{id}
+    </select>
+
+    <select id="listQuestionsBefore6" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.HotQuestionVo">
+        SELECT id,
+               title,
+               content,
+               type,
+               answers,
+               browses,
+               add_time,
+               heat
+        FROM question
+        WHERE add_time >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 22 HOUR;
+    </select>
+
+    <select id="listQuestionsAfter6" resultType="vip.xiaozhao.intern.baseUtil.intf.vo.HotQuestionVo">
+        SELECT id,
+               title,
+               content,
+               type,
+               answers,
+               browses,
+               add_time,
+               heat
+        FROM question
+        WHERE add_time >= CURDATE();
     </select>
 
 </mapper>

@@ -18,10 +18,10 @@ public class ConvertUtils {
         return JSON.parseObject(jsonString, targetType);
     }
 
-    public static <T> List<T> convert2List(Object object) {
+    public static <T> List<T> convert2List(Object object, Class<T> clazz) {
         // 将对象序列化为 JSON 字符串
         String jsonString = JSON.toJSONString(object);
         // 使用 TypeReference 反序列化
-        return JSON.parseObject(jsonString, new TypeReference<>(){});
+        return JSON.parseArray(jsonString, clazz);
     }
 }

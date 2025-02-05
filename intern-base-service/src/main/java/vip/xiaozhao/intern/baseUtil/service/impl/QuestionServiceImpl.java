@@ -3,8 +3,11 @@ package vip.xiaozhao.intern.baseUtil.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaozhao.intern.baseUtil.intf.constant.QueryConstant;
+import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Image;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
@@ -13,13 +16,17 @@ import vip.xiaozhao.intern.baseUtil.intf.enums.QuestionTypeEnum;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.*;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
 import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
+import vip.xiaozhao.intern.baseUtil.intf.utils.ConvertUtils;
+import vip.xiaozhao.intern.baseUtil.intf.vo.HotQuestionVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -37,10 +44,10 @@ public class QuestionServiceImpl implements QuestionService {
     private UserMapper userMapper;
 
     @Resource
-    private AnswerMapper answerMapper;
+    private UserService userService;
 
     @Resource
-    private UserService userService;
+    private RedisTemplate redisTemplate;
 
     @Override
     public Map<Integer, String> getAllQuestionTypes() {
@@ -141,5 +148,56 @@ public class QuestionServiceImpl implements QuestionService {
         UserBasicVo userVo = userService.getUserBasic(userId);
         vo.setUserVo(userVo);
         return vo;
+    }
+
+    @Override
+    public List<HotQuestionVo> listHotQuestions() {
+        // 查缓存，不存在则缓存
+        String key = RedisConstant.HOT_QUESTION;
+        Object o = redisTemplate.opsForValue().get(key);
+        List<HotQuestionVo> vos;
+        // 如果查到了，直接返回
+        if (o != null) {
+            vos = ConvertUtils.convert2List(o, HotQuestionVo.class);
+        } else {
+            // 如果为空就去数据库查
+            // 先分时段查询
+            LocalDateTime now = LocalDateTime.now();
+            int hour = now.getHour();
+            // 6 点之前，查询昨天22点之后的数据
+            if (hour < 6) {
+                vos = questionMapper.listQuestionsBefore6();
+            } else {
+                // 查询今天0点之后的数据
+                vos = questionMapper.listQuestionsAfter6();
+            }
+            if (vos == null) {
+                throw new RuntimeException("问题不存在");
+            }
+            // 构造过滤规则
+            // (heat + 1) / (time + 2) ^ G，且每种前20
+            Instant nowInstant = Instant.now();
+            Map<Integer, List<HotQuestionVo>> top20ByType = vos.stream()
+                    .sorted(Comparator.comparingDouble((HotQuestionVo vo) ->
+                            (vo.getHeat() + 1) / Math.pow(
+                                    Duration.between(vo.getAddTime().toInstant(), nowInstant).toHours() + 2,
+                                    QueryConstant.FACTOR)
+                    ).reversed())
+                    .collect(Collectors.groupingBy(HotQuestionVo::getType,
+                            Collectors.collectingAndThen(Collectors.toList(), (List<HotQuestionVo> list) ->
+                                    list.stream().limit(20).toList())));
+
+            vos = top20ByType.values().stream()
+                    .flatMap(List::stream)
+                    .sorted(Comparator.comparingDouble((HotQuestionVo vo) ->
+                            (vo.getHeat() + 1) / Math.pow(
+                                    Duration.between(vo.getAddTime().toInstant(), nowInstant).toHours() + 2,
+                                    QueryConstant.FACTOR)
+                    ).reversed())
+                    .toList();
+            // 放缓存
+            redisTemplate.opsForValue().set(key, vos, 2, TimeUnit.MINUTES);
+        }
+        return vos;
     }
 }

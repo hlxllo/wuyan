@@ -9,6 +9,7 @@ import vip.xiaozhao.intern.baseUtil.controller.BaseController;
 import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
+import vip.xiaozhao.intern.baseUtil.intf.vo.HotQuestionVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
 import java.util.List;
@@ -46,5 +47,15 @@ public class QuestionController extends BaseController {
     public ResponseDO getQuestionDetail(@PathVariable int id) {
         QuestionDetailVo vo = questionService.getQuestionDetail(id);
         return ResponseDO.success(vo);
+    }
+
+    // 获取热门问题列表
+    @GetMapping("/hot")
+    public ResponseDO listHotQuestions(/*@RequestParam int page*/) {
+        //if (page < 1) {
+        //    return ResponseDO.fail("页码错误");
+        //}
+        List<HotQuestionVo> vos = questionService.listHotQuestions(/*page*/);
+        return ResponseDO.success(vos);
     }
 }
