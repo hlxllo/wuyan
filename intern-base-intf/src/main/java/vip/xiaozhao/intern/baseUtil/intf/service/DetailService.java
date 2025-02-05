@@ -10,8 +10,6 @@ import java.util.List;
  * @author dogofayaka
  */
 public interface DetailService {
-    // 获取问题详情
-    QuestionDetailVo getQuestionDetail(int id);
     // 查询回答列表
     List<AnswerDetailVo> listAnswers(int id, int rule, int page);
     // 提交回答

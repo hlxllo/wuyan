@@ -11,7 +11,6 @@ import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
 import vip.xiaozhao.intern.baseUtil.intf.service.DetailService;
 import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
-import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
 import java.util.List;
 
@@ -29,13 +28,6 @@ public class DetailController extends BaseController {
 
     @Resource
     private DetailService detailService;
-
-    // 查询问题详情
-    @GetMapping("/question/{id}")
-    public ResponseDO getQuestionDetail(@PathVariable int id) {
-        QuestionDetailVo vo = detailService.getQuestionDetail(id);
-        return ResponseDO.success(vo);
-    }
 
     // 查询回答列表
     @GetMapping("/answers/{id}")

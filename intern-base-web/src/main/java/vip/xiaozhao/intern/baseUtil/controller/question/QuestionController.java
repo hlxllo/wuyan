@@ -9,6 +9,7 @@ import vip.xiaozhao.intern.baseUtil.controller.BaseController;
 import vip.xiaozhao.intern.baseUtil.intf.dto.ResponseDO;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
+import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 
 import java.util.List;
 import java.util.Map;
@@ -38,5 +39,12 @@ public class QuestionController extends BaseController {
     public ResponseDO insertQuestion(@Valid @RequestBody Question question) {
         int id = questionService.insertQuestion(question);
         return ResponseDO.success(id);
+    }
+
+    // 查询问题详情
+    @GetMapping("/{id}")
+    public ResponseDO getQuestionDetail(@PathVariable int id) {
+        QuestionDetailVo vo = questionService.getQuestionDetail(id);
+        return ResponseDO.success(vo);
     }
 }

@@ -1,15 +1,12 @@
 package vip.xiaozhao.intern.baseUtil.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import vip.xiaozhao.intern.baseUtil.intf.constant.PageConstant;
 import vip.xiaozhao.intern.baseUtil.intf.constant.RedisConstant;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Answer;
-import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.DetailMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
 import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
@@ -20,7 +17,6 @@ import vip.xiaozhao.intern.baseUtil.intf.vo.AnswerDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
 import vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,41 +33,7 @@ public class DetailServiceImpl implements DetailService {
     private UserService userService;
 
     @Resource
-    private TopicMapper topicMapper;
-
-    @Resource
-    private QuestionMapper questionMapper;
-
-    @Resource
     private RedisTemplate redisTemplate;
-
-    @Override
-    public QuestionDetailVo getQuestionDetail(int id) {
-        if (id <= 0) {
-            throw new RuntimeException("id 不存在");
-        }
-        // 根据 id 查询问题
-        QuestionDetailVo vo = detailMapper.getQuestionDetailById(id);
-        if (vo == null) {
-            throw new RuntimeException("问题不存在");
-        }
-        // 根据 id 查询话题
-        List<Integer> topicIds = questionMapper.getTopicIds(id);
-        if (CollUtil.isEmpty(topicIds)) {
-            throw new RuntimeException("话题不存在");
-        }
-        List<Topic> topics = new ArrayList<>();
-        for (Integer topicId : topicIds) {
-            Topic topic = topicMapper.getTopicById(topicId);
-            topics.add(topic);
-        }
-        vo.setTopics(topics);
-        // 根据 userId 查询用户基本信息
-        int userId = vo.getUserId();
-        UserBasicVo userVo = userService.getUserBasic(userId);
-        vo.setUserVo(userVo);
-        return vo;
-    }
 
     @Override
     public List<AnswerDetailVo> listAnswers(int id, int rule, int page) {
@@ -126,7 +88,7 @@ public class DetailServiceImpl implements DetailService {
         detailMapper.addAnswer(answer);
         int id = answer.getId();
         if (id <= 0) {
-            throw new RuntimeException("发布问题失败");
+            throw new RuntimeException("发布回答失败");
         }
         return id;
     }

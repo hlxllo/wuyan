@@ -1,5 +1,6 @@
 package vip.xiaozhao.intern.baseUtil.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,13 @@ import vip.xiaozhao.intern.baseUtil.intf.entity.Question;
 import vip.xiaozhao.intern.baseUtil.intf.entity.Topic;
 import vip.xiaozhao.intern.baseUtil.intf.entity.User;
 import vip.xiaozhao.intern.baseUtil.intf.enums.QuestionTypeEnum;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.ImageMapper;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.QuestionMapper;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.TopicMapper;
-import vip.xiaozhao.intern.baseUtil.intf.mapper.UserMapper;
+import vip.xiaozhao.intern.baseUtil.intf.mapper.*;
 import vip.xiaozhao.intern.baseUtil.intf.service.QuestionService;
+import vip.xiaozhao.intern.baseUtil.intf.service.UserService;
+import vip.xiaozhao.intern.baseUtil.intf.vo.QuestionDetailVo;
+import vip.xiaozhao.intern.baseUtil.intf.vo.UserBasicVo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private DetailMapper detailMapper;
+
+    @Resource
+    private UserService userService;
 
     @Override
     public Map<Integer, String> getAllQuestionTypes() {
@@ -105,5 +113,33 @@ public class QuestionServiceImpl implements QuestionService {
             questionMapper.insertQuestionTopicRelation(questionId, topicId);
         }
         return questionId;
+    }
+
+    @Override
+    public QuestionDetailVo getQuestionDetail(int id) {
+        if (id <= 0) {
+            throw new RuntimeException("id 不存在");
+        }
+        // 根据 id 查询问题
+        QuestionDetailVo vo = detailMapper.getQuestionDetailById(id);
+        if (vo == null) {
+            throw new RuntimeException("问题不存在");
+        }
+        // 根据 id 查询话题
+        List<Integer> topicIds = questionMapper.getTopicIds(id);
+        if (CollUtil.isEmpty(topicIds)) {
+            throw new RuntimeException("话题不存在");
+        }
+        List<Topic> topics = new ArrayList<>();
+        for (Integer topicId : topicIds) {
+            Topic topic = topicMapper.getTopicById(topicId);
+            topics.add(topic);
+        }
+        vo.setTopics(topics);
+        // 根据 userId 查询用户基本信息
+        int userId = vo.getUserId();
+        UserBasicVo userVo = userService.getUserBasic(userId);
+        vo.setUserVo(userVo);
+        return vo;
     }
 }
